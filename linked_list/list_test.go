@@ -35,4 +35,11 @@ func TestLinkedList(t *testing.T) {
 	if l.size != 2 {
 		t.Error("Size() is not valid")
 	}
+	// test reverse
+	l.Reverse()
+	arr = l.ToArray()
+	if arr[0] != 3 || arr[1] != 2 {
+		t.Error("Reverse() is not valid")
+	}
+
 }
