@@ -60,10 +60,7 @@ func (s *Stack) Peek() int {
 
 // check if the stack is empty
 func (s *Stack) IsEmpty() bool {
-	if s.top == nil {
-		return true
-	}
-	return false
+	return s.top == nil
 }
 
 // get the size of the stack
