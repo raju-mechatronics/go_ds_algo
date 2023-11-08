@@ -1,23 +1,20 @@
 package main
 
 import (
-	"ds_algo/linked_list"
+	"ds_algo/stack"
 	"fmt"
 )
 
 func main() {
-	linkedList := linked_list.LinkedList{}
-	linkedList.AddLast(1)
-	linkedList.AddLast(2)
-	linkedList.AddLast(3)
-	linkedList.AddLast(4)
-	linkedList.AddLast(5)
-	linkedList.AddLast(6)
-	linkedList.AddLast(7)
-	linkedList.AddLast(8)
-	linkedList.AddLast(9)
-	linkedList.AddLast(1)
-	fmt.Println(linkedList.ToArray())
-	linkedList.Reverse()
-	fmt.Println(linkedList.ToArray())
+	s := stack.Stack{}
+	s.Push(1)
+	s.Push(2)
+	s.Push(3)
+	s.Push(4)
+	s.Push(5)
+	fmt.Println(s.Pop())
+	fmt.Println(s.Pop())
+	fmt.Println(s.Peek())
+	s.Print()
+	fmt.Println(s.Size())
 }
