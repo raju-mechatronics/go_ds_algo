@@ -4,26 +4,26 @@ import (
 	"fmt"
 )
 
-type node struct {
-	data int
-	next *node
+type node[T any] struct {
+	data T
+	next *node[T]
 }
 
-func create_node(value int) *node {
-	t := node{
+func create_node[T any](value T) *node[T] {
+	t := node[T]{
 		data: value,
 		next: nil,
 	}
 	return &t
 }
 
-type LinkedList struct {
-	head *node
-	tail *node
+type LinkedList[T any] struct {
+	head *node[T]
+	tail *node[T]
 	size int
 }
 
-func (l *LinkedList) AddLast(data int) bool {
+func (l *LinkedList[T]) AddLast(data T) bool {
 	if l.head == nil && l.tail == nil {
 		n := create_node(data)
 		l.head = n
@@ -44,14 +44,14 @@ func (l *LinkedList) AddLast(data int) bool {
 	return false
 }
 
-func (l *LinkedList) isEmpty() bool {
+func (l *LinkedList[T]) isEmpty() bool {
 	if l.head == nil && l.tail == nil {
 		return true
 	}
 	return false
 }
 
-func (l *LinkedList) AddFirst(value int) bool {
+func (l *LinkedList[T]) AddFirst(value T) bool {
 	if l.isEmpty() {
 		l.head = create_node(value)
 		l.tail = l.head
@@ -66,7 +66,7 @@ func (l *LinkedList) AddFirst(value int) bool {
 	return true
 }
 
-func (l *LinkedList) Insert(index int, value int) error {
+func (l *LinkedList[T]) Insert(index int, value T) error {
 	if index > l.size {
 		return fmt.Errorf("out of index. max is %d", l.size)
 	} else if index < 0 {
@@ -90,22 +90,22 @@ func (l *LinkedList) Insert(index int, value int) error {
 	return fmt.Errorf("out of index. max is %d", l.size)
 }
 
-func (l *LinkedList) ToArray() []int {
+func (l *LinkedList[T]) ToArray() []T {
 	fmt.Println("size:", l.size)
-	sl := make([]int, 0)
+	sl := make([]T, 0)
 	for cur := l.head; cur != nil; cur = cur.next {
 		sl = append(sl, cur.data)
 	}
 	return sl
 }
 
-func (l *LinkedList) Print() {
+func (l *LinkedList[T]) Print() {
 	for cur := l.head; cur != nil; cur = cur.next {
 		fmt.Println(cur.data)
 	}
 }
 
-func (l *LinkedList) Remove(index int) error {
+func (l *LinkedList[T]) Remove(index int) error {
 	if index > l.size {
 		return fmt.Errorf("out of index. max is %d", l.size)
 	} else if index < 0 {
@@ -128,11 +128,12 @@ func (l *LinkedList) Remove(index int) error {
 	return fmt.Errorf("out of index. max is %d", l.size)
 }
 
-func (l *LinkedList) Get(index int) (int, error) {
+func (l *LinkedList[T]) Get(index int) (T, error) {
+	var data T
 	if index > l.size {
-		return 0, fmt.Errorf("out of index. max is %d", l.size)
+		return data, fmt.Errorf("out of index. max is %d", l.size)
 	} else if index < 0 {
-		return 0, fmt.Errorf("index start from 0")
+		return data, fmt.Errorf("index start from 0")
 	}
 
 	for cur, i := l.head, index; cur != nil; cur, i = cur.next, i-1 {
@@ -140,7 +141,7 @@ func (l *LinkedList) Get(index int) (int, error) {
 			return cur.data, nil
 		}
 	}
-	return 0, fmt.Errorf("out of index. max is %d", l.size)
+	return data, fmt.Errorf("out of index. max is %d", l.size)
 }
 
 /*
@@ -159,7 +160,7 @@ func (l *LinkedList) Get(index int) (int, error) {
 
 */
 
-func (l *LinkedList) Reverse() {
+func (l *LinkedList[T]) Reverse() {
 	if l.head == nil {
 		return
 	}
@@ -173,4 +174,16 @@ func (l *LinkedList) Reverse() {
 		cur = next
 	}
 	l.head = prev
+}
+
+func (l *LinkedList[T]) Iterator() func() *T {
+	current := l.head
+	return func() *T {
+		if current == nil {
+			return nil
+		}
+		data := current.data
+		current = current.next
+		return &data
+	}
 }

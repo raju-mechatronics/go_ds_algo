@@ -1,20 +1,19 @@
 package main
 
 import (
-	"ds_algo/stack"
+	"ds_algo/hashmap"
 	"fmt"
 )
 
 func main() {
-	s := stack.Stack{}
-	s.Push(1)
-	s.Push(2)
-	s.Push(3)
-	s.Push(4)
-	s.Push(5)
-	fmt.Println(s.Pop())
-	fmt.Println(s.Pop())
-	fmt.Println(s.Peek())
-	s.Print()
-	fmt.Println(s.Size())
+	//check hash map
+	m := hashmap.HashMap[string, int]{}
+	m.Put("hello", 1)
+	m.Put("world", 2)
+	m.Put("hello", 3)
+	// check if put is working
+	fmt.Println(m.Get("hello"))
+	fmt.Println(m.Get("world"))
+	// check if get is working
+	fmt.Println(m.Get("not_found"))
 }

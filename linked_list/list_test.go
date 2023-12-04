@@ -5,7 +5,7 @@ import (
 )
 
 func TestLinkedList(t *testing.T) {
-	l := LinkedList{}
+	l := LinkedList[int]{}
 	l.AddFirst(1)
 	//test if AddFirst is valid or not
 	if l.head.data != 1 || l.tail.data != 1 {
@@ -41,5 +41,4 @@ func TestLinkedList(t *testing.T) {
 	if arr[0] != 3 || arr[1] != 2 {
 		t.Error("Reverse() is not valid")
 	}
-
 }
