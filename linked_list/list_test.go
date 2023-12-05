@@ -1,6 +1,7 @@
 package linked_list
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -40,5 +41,16 @@ func TestLinkedList(t *testing.T) {
 	arr = l.ToArray()
 	if arr[0] != 3 || arr[1] != 2 {
 		t.Error("Reverse() is not valid")
+	}
+
+	t_next := l.Iterator()
+	for t_cur, t_ok := t_next(); t_ok == true; t_cur, t_ok = t_next() {
+		*t_cur = *t_cur + 1
+	}
+
+	//test iterator
+	next := l.Iterator()
+	for cur, ok := next(); ok == true; cur, ok = next() {
+		fmt.Println(ok, *cur)
 	}
 }

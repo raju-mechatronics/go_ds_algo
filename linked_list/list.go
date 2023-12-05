@@ -176,14 +176,15 @@ func (l *LinkedList[T]) Reverse() {
 	l.head = prev
 }
 
-func (l *LinkedList[T]) Iterator() func() *T {
+func (l *LinkedList[T]) Iterator() func() (*T, bool) {
 	current := l.head
-	return func() *T {
+	return func() (*T, bool) {
+		var data T
 		if current == nil {
-			return nil
+			return &data, false
 		}
-		data := current.data
+		d := &current.data
 		current = current.next
-		return &data
+		return d, true
 	}
 }
