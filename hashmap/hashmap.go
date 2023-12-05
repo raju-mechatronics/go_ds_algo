@@ -43,7 +43,7 @@ func (m *HashMap[K, V]) Put(key K, value V) {
 		list := m.buckets[hash_index]
 		next := list.Iterator()
 
-		for cur := next(); cur != nil; cur = next() {
+		for cur, ok := next(); ok == true; cur, ok = next() {
 			if cur.key == key {
 				cur.value = value
 				return
@@ -55,19 +55,20 @@ func (m *HashMap[K, V]) Put(key K, value V) {
 
 func (m *HashMap[K, V]) Get(key K) (V, error) {
 	hash_index := hash(key)
-	var zero V
+	var val V
 	if m.buckets[hash_index] == nil {
-		return zero, fmt.Errorf("key not found")
+		return val, fmt.Errorf("key not found")
 	}
 	list := m.buckets[hash_index]
 	next := list.Iterator()
 
-	for cur := next(); cur != nil; cur = next() {
+	for cur, ok := next(); ok == true; cur, ok = next() {
 		if cur.key == key {
 			return cur.value, nil
 		}
 	}
-	return zero, fmt.Errorf("key not found")
+
+	return val, fmt.Errorf("key not found")
 }
 
 func (m *HashMap[K, V]) Remove(key K) error {
@@ -79,9 +80,12 @@ func (m *HashMap[K, V]) Remove(key K) error {
 	next := list.Iterator()
 
 	i := 0
-	for cur := next(); cur != nil; cur = next() {
+	for cur, ok := next(); ok == true; cur, ok = next() {
 		if cur.key == key {
-			list.Remove(i)
+			err := list.Remove(i)
+			if err != nil {
+				return err
+			}
 			return nil
 		}
 		i++
