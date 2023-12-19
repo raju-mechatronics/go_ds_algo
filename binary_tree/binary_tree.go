@@ -8,25 +8,29 @@ type node struct {
 	rightChild *node
 }
 
+func createNewNode(value int) *node {
+	return &node{value, nil, nil}
+}
+
 type BinaryTree struct {
 	root *node
 }
 
-func insert(root *node, value int) {
+func insert(root *node, value int) *node {
 	if root == nil {
-		newNode := node{value: value}
-		*root = newNode
-		return
+		root = createNewNode(value)
+		return root
 	}
 	if value < root.value {
-		insert(root.leftChild, value)
+		root.leftChild = insert(root.leftChild, value)
 	} else {
-		insert(root.rightChild, value)
+		root.rightChild = insert(root.rightChild, value)
 	}
+	return root
 }
 
 func (BT *BinaryTree) Insert(value int) {
-	insert(BT.root, value)
+	BT.root = insert(BT.root, value)
 }
 
 func getHeight(root *node) int {
@@ -87,29 +91,47 @@ func (BT BinaryTree) CountLeaves() int {
 }
 
 func contains(root *node, value int) bool {
-	if root.value == value {
-		return true
-	}
 	if root == nil {
 		return false
 	}
-	return contains(root.leftChild, value) || contains(root.rightChild, value)
+	if root.value == value {
+		return true
+	}
+	if root.value > value {
+		return contains(root.leftChild, value)
+	} else {
+		return contains(root.rightChild, value)
+	}
 }
 
 func (BT BinaryTree) Contains(value int) bool {
 	return contains(BT.root, value)
 }
 
-func getAncestor(root *node, value int) bool {
+func getAncestor(root *node, value int) []int {
 	if root == nil {
-		return false
+		return []int{}
 	}
 	if root.value == value {
-		return true
+		return []int{}
 	}
-	return getAncestor(root.leftChild, value) || getAncestor(root.rightChild, value)
+	if root.leftChild != nil && root.leftChild.value == value {
+		return []int{root.value}
+	} else if root.rightChild != nil && root.rightChild.value == value {
+		return []int{root.value}
+	} else {
+		leftAncestors := getAncestor(root.leftChild, value)
+		if len(leftAncestors) != 0 {
+			return append(leftAncestors, root.value)
+		}
+		rightAncestors := getAncestor(root.rightChild, value)
+		if len(rightAncestors) != 0 {
+			return append(rightAncestors, root.value)
+		}
+		return []int{}
+	}
 }
 
-func (BT BinaryTree) GetAncestors() []int {
-
+func (BT BinaryTree) GetAncestors(value int) []int {
+	return getAncestor(BT.root, value)
 }
