@@ -2,19 +2,16 @@ package stack
 
 import "fmt"
 
-// stack ds
 type Stack struct {
 	top  *node
 	size int
 }
 
-// node ds
 type node struct {
 	data int
 	next *node
 }
 
-// create a new node
 func create_node(value int) *node {
 	t := node{
 		data: value,
@@ -23,7 +20,6 @@ func create_node(value int) *node {
 	return &t
 }
 
-// push a new value to the stack
 func (s *Stack) Push(value int) bool {
 	if s.top == nil {
 		s.top = create_node(value)
@@ -38,7 +34,6 @@ func (s *Stack) Push(value int) bool {
 	return true
 }
 
-// pop the top value from the stack
 func (s *Stack) Pop() int {
 	if s.top == nil {
 		return -1
@@ -50,7 +45,6 @@ func (s *Stack) Pop() int {
 	return top.data
 }
 
-// peek the top value from the stack
 func (s *Stack) Peek() int {
 	if s.top == nil {
 		return -1
@@ -58,17 +52,14 @@ func (s *Stack) Peek() int {
 	return s.top.data
 }
 
-// check if the stack is empty
 func (s *Stack) IsEmpty() bool {
 	return s.top == nil
 }
 
-// get the size of the stack
 func (s *Stack) Size() int {
 	return s.size
 }
 
-// print the stack
 func (s *Stack) Print() {
 	if s.top == nil {
 		return

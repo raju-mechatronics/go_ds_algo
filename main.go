@@ -1,19 +1,29 @@
 package main
 
-import (
-	"ds_algo/hashmap"
-	"fmt"
-)
+import "fmt"
+
+type Fest struct {
+	n int
+}
+
+type Test struct {
+	f *Fest
+}
+
+func F2(i *Fest) {
+	fmt.Printf(", %p \n", i)
+	i = &Fest{0}
+	fmt.Printf(", %p \n", i)
+}
+
+func F1(t *Test) {
+	fmt.Printf("%p %p", t, t.f)
+	F2(t.f)
+}
 
 func main() {
-	//check hash map
-	m := hashmap.HashMap[string, int]{}
-	m.Put("hello", 1)
-	m.Put("world", 2)
-	m.Put("hello", 3)
-	// check if put is working
-	fmt.Println(m.Get("hello"))
-	fmt.Println(m.Get("world"))
-	// check if get is working
-	fmt.Println(m.Get("not_found"))
+	t := &Test{&Fest{1}}
+	fmt.Printf("%p \n", t)
+	F1(t)
+	fmt.Println(t.f.n)
 }

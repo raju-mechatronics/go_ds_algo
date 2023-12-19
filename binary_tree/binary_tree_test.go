@@ -71,7 +71,6 @@ func TestBinaryTree_GetMin(t *testing.T) {
 	}
 }
 
-// test contains
 func TestBinaryTree_Contains(t *testing.T) {
 	BT := BinaryTree{nil}
 	BT.Insert(5)
@@ -87,7 +86,6 @@ func TestBinaryTree_Contains(t *testing.T) {
 	}
 }
 
-// test: get ancestor. a value is given, find the ancestor of this value. GetAncestors returns the ancestor values in a slice.
 func TestBinaryTree_GetAncestor(t *testing.T) {
 	BT := BinaryTree{nil}
 	BT.Insert(5)
