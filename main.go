@@ -1,29 +1,57 @@
 package main
 
-import "fmt"
-
-type Fest struct {
-	n int
-}
-
-type Test struct {
-	f *Fest
-}
-
-func F2(i *Fest) {
-	fmt.Printf(", %p \n", i)
-	i = &Fest{0}
-	fmt.Printf(", %p \n", i)
-}
-
-func F1(t *Test) {
-	fmt.Printf("%p %p", t, t.f)
-	F2(t.f)
-}
+import (
+	"ds_algo/heap"
+	"fmt"
+)
 
 func main() {
-	t := &Test{&Fest{1}}
-	fmt.Printf("%p \n", t)
-	F1(t)
-	fmt.Println(t.f.n)
+	h := heap.New()
+
+	h.Insert(7)
+	fmt.Println(h.GetArr())
+	h.Insert(4)
+	fmt.Println(h.GetArr())
+	h.Insert(5)
+	fmt.Println(h.GetArr())
+	h.Insert(6)
+	fmt.Println(h.GetArr())
+	h.Insert(1)
+	fmt.Println(h.GetArr())
+	h.Insert(2)
+	fmt.Println(h.GetArr())
+	h.Insert(30)
+	fmt.Println(h.GetArr())
+	h.Insert(3)
+	fmt.Println(h.GetArr())
+	h.Insert(8)
+	fmt.Println(h.GetArr())
+	h.Insert(9)
+	fmt.Println(h.GetArr())
+	h.Insert(10)
+	fmt.Println(h.GetArr())
+	h.Insert(11)
+	fmt.Println(h.GetArr())
+	h.Insert(12)
+	fmt.Println(h.GetArr())
+	h.Remove()
+	fmt.Println(h.GetArr())
+	h.Remove()
+	fmt.Println(h.GetArr())
+	h.Remove()
+	fmt.Println(h.GetArr())
+	h.Remove()
+	fmt.Println(h.GetArr())
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	h.Remove()
+	fmt.Println(h.GetArr())
+
 }
