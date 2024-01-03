@@ -1,7 +1,6 @@
 package heap
 
 import (
-	"fmt"
 	"log"
 	"net"
 )
@@ -28,7 +27,6 @@ func (h *Heap) getLeftChildIndex(index int) int {
 }
 
 func (h *Heap) getRightChildIndex(index int) int {
-
 	if index*2+1 < h.size {
 		return index*2 + 1
 	} else {
@@ -37,18 +35,18 @@ func (h *Heap) getRightChildIndex(index int) int {
 }
 
 func (h *Heap) getRightChild(index int) int {
-	r_index := h.getRightChildIndex(index)
-	if r_index >= 0 {
-		return h.arr[r_index]
+	rIndex := h.getRightChildIndex(index)
+	if rIndex >= 0 {
+		return h.arr[rIndex]
 	} else {
 		return -1
 	}
 }
 
 func (h *Heap) getLeftChild(index int) int {
-	r_index := h.getLeftChildIndex(index)
-	if r_index >= 0 {
-		return h.arr[r_index]
+	rIndex := h.getLeftChildIndex(index)
+	if rIndex >= 0 {
+		return h.arr[rIndex]
 	} else {
 		return -1
 	}
@@ -62,12 +60,12 @@ func (h *Heap) getParentIndex(index int) int {
 	}
 }
 
-func (h *Heap) getParent(index int) (int, error) {
-	p_index := h.getParentIndex(index)
-	if p_index > -1 {
-		return h.arr[p_index], nil
+func (h *Heap) getParent(index int) int {
+	pIndex := h.getParentIndex(index)
+	if pIndex > -1 {
+		return h.arr[pIndex]
 	} else {
-		return -1, fmt.Errorf("this is the root")
+		return -1
 	}
 }
 
@@ -118,18 +116,19 @@ func (h *Heap) rearrange() interface{} {
 func (h *Heap) Insert(i int) {
 	h.size = h.size + 1
 	h.arr = append(h.arr, i)
-	h.rearrange()
+	h.BubbleUp()
 }
 
 func (h *Heap) Remove() int {
 	if h.size == 0 {
 		log.Fatalf("Heap is empty")
 	}
-	x := h.arr[0]
-	h.arr = h.arr[1:]
+	start, end := h.arr[0], h.arr[h.size-1]
+	h.arr[0], h.arr[h.size-1] = end, start
 	h.size = h.size - 1
-	h.rearrange()
-	return x
+	h.arr = h.arr[:h.size]
+	h.BubbleDown()
+	return start
 }
 
 func (h Heap) Sort() []int {
@@ -140,11 +139,53 @@ func (h Heap) Sort() []int {
 	return sorted
 }
 
-//
-//func (h *Heap) Pop() int {
-//
-//}
-//
-//func (h *Heap) Sort() {
-//
-//}
+func (h *Heap) BubbleUp() {
+	size := h.size
+	for i := size - 1; i >= 0; {
+		if h.hasParent(i) && h.get(i) > h.getParent(i) {
+			h.arr[i], h.arr[h.getParentIndex(i)] = h.arr[h.getParentIndex(i)], h.arr[i]
+			i = h.getParentIndex(i)
+		} else {
+			break
+		}
+	}
+}
+
+func (h *Heap) hasParent(i int) bool {
+	if i > 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+func (h *Heap) BubbleDown() {
+	size := h.size
+
+	for i := 0; i < size; {
+		if h.hasChildreen(i) {
+			if h.hasRightChild(i) {
+				if h.get(i) >= h.getLeftChild(i) && h.get(i) >= h.getRightChild(i) {
+					break
+				} else if h.getLeftChild(i) > h.getRightChild(i) {
+					h.arr[i], h.arr[h.getLeftChildIndex(i)] = h.arr[h.getLeftChildIndex(i)], h.arr[i]
+					i = h.getLeftChildIndex(i)
+					continue
+				} else {
+					h.arr[i], h.arr[h.getRightChildIndex(i)] = h.arr[h.getRightChildIndex(i)], h.arr[i]
+					i = h.getRightChildIndex(i)
+					continue
+				}
+			} else {
+				if h.get(i) < h.getLeftChild(i) {
+					h.arr[i], h.arr[h.getLeftChildIndex(i)] = h.arr[h.getLeftChildIndex(i)], h.arr[i]
+					i = h.getLeftChildIndex(i)
+					continue
+				} else {
+					break
+				}
+			}
+		}
+		break
+	}
+}
