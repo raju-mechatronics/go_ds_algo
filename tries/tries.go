@@ -59,11 +59,11 @@ func (t *node) removeChild(r rune) {
 }
 
 func (t *node) Remove(word string) {
-	child_len = len(t.children)
-	if child_len == 1 && t.hasChild(rune(word[0])) {
-		t.removeChild(word[0])
+	childLen := len(t.children)
+	if childLen == 1 && t.hasChild(rune(word[0])) {
+		t.removeChild(rune(word[0]))
 		return
-	} 
+	}
 
 	if len(word) == 1 {
 		t.children[rune(word[0])].isEnd = false
@@ -73,7 +73,32 @@ func (t *node) Remove(word string) {
 	t.children[rune(word[0])].Remove(word[1:])
 }
 
+func searching(n node, prevWord string) {
 
-func (t *node) Search(word string) bool {
-	
+}
+
+func (t *node) Search(word string) []string {
+	cNode := t
+	for i := 0; i < len(word); i++ {
+		l := word[i]
+		if cNode.hasChild(rune(l)) {
+			cNode = cNode.children[rune(l)]
+		} else {
+			return make([]string, 0)
+		}
+	}
+
+	return cNode.GetWords(word)
+}
+
+func (t *node) GetWords(prv string) []string {
+	result := make([]string, 0)
+	for n := range t.children {
+		cNode := t.children[n]
+		if cNode.isEnd {
+			result = append(result, prv+string(cNode.value))
+		}
+		result = append(result, cNode.GetWords(prv+string(cNode.value))...)
+	}
+	return result
 }
